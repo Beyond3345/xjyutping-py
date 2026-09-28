@@ -1,0 +1,12 @@
+# macOS and Python leftovers
+.DS_Store
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+# TeX build files of tests/parity.tex
+tests/*.aux
+tests/*.log
+tests/*.pdf
