@@ -1,0 +1,12 @@
+% Regenerates parity_expected.txt from the TeX package (see test_parity):
+%   xelatex parity.tex && grep '^xjyutping>' parity.log > parity_expected.txt
+% with xjyutping.sty and its .def files on TEXINPUTS and max_print_line=10000.
+\documentclass{article}
+\usepackage{xeCJK}
+\setCJKmainfont{Songti TC}
+\usepackage[debug]{xjyutping}
+\begin{document}
+\begin{jyutpingscope}
+\input{parity_corpus.txt}
+\end{jyutpingscope}
+\end{document}
