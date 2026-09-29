@@ -20,7 +20,7 @@ xjyutping> 佢keoi5:s |喺hai2:s |銀ngan4:w行hong4:w |做zou6:w嘢je5:w |
 xjyutping> 做zou6:s |咗zo2:s |三saam1:s |年nin4:s |
 xjyutping> 仲zung6:w係hai6:w |好hou2:m(hou3) |鍾zung1:w意ji3:w |份fan6:s |工gung1:s |
 xjyutping> 呢ni1:m(nei4 ne1 le1 nei1) |間gaan1:m(gaan3 haan4) |餐caan1:w廳teng1:w |啲di1:s |嘢je5:w食sik6:w |好hou2:m(hou3) |好hou2:w味mei6:w |
-xjyutping> 不bat1:w過gwo3:w |價gaa3:w錢cin2:w |有jau5:w啲di1:w |貴gwai3:s |
+xjyutping> 不bat1:w過gwo3:w |價gaa3:w錢cin4:w |有jau5:w啲di1:w |貴gwai3:s |
 xjyutping> 你nei5:s |覺gok3:w得dak1:w |點dim2:w呀aa4:w |
 xjyutping> 我ngo5:s |覺gok3:w得dak1:w |都dou1:s |幾gei2:s |抵dai2:w食sik6:w |
 xjyutping> 佢keoi5:s |成seng4:w晚maan5:w |瞓fan3:w唔m4:w到dou2:w覺gaau3:w |
@@ -77,7 +77,7 @@ xjyutping> 參caam1:w差ci1:w不bat1:w齊cai4:w |的dik1:s |報bou3:w告gou3:w |
 xjyutping> 隨ceoi4:w着zoek6:w |科fo1:w技gei6:w |發faat3:w展zin2:w |
 xjyutping> 網mong5:w上soeng6:w |購kau3:w物mat6:w |變bin3:s |得dak1:s |越jyut6:w來loi4:w越jyut6:w |方fong1:w便bin6:w |
 xjyutping> 便bin6:w利lei6:w店dim3:w |的dik1:s |生saang1:w意ji3:w |卻koek3:s |受sau6:w到dou3:w |影jing2:w響hoeng2:w |
-xjyutping> 價gaa3:w錢cin2:w |亦jik6:s |比bei2:w較gaau3:w |便pin4:w宜ji4:w |
+xjyutping> 價gaa3:w錢cin4:w |亦jik6:s |比bei2:w較gaau3:w |便pin4:w宜ji2:w |
 xjyutping> 他taa1:s |説syut3:m(seoi3 jyut6) |這ze2:s |件gin6:w事si6:w |與jyu5:s |他taa1:s |無mou4:w關gwaan1:w |
 xjyutping> 她taa1:s |說syut3:m(seoi3 jyut6) |這ze2:s |是si6:s |誤ng6:w會wui6:w |
 xjyutping> 房fong4:w間gaan1:w |裏leoi5:w面min6:w |很han2:s |暗am3:s |

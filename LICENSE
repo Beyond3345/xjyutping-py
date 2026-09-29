@@ -37,6 +37,10 @@ they adapt share-alike material. They are built from:
     readings, Copyright (c) 2015 Pleco Software Inc., both Creative Commons
     Attribution-ShareAlike 3.0 (CC BY-SA 3.0), as distributed with Jyut
     Dictionary (https://github.com/aaronhktan/jyut-dict);
+  * the word list of ToJyutping by the Cantonese Computational Linguistics
+    Infrastructure Development Workgroup (CanCLID),
+    https://github.com/CanCLID/ToJyutping, BSD 2-Clause License (the notice
+    is reproduced below);
   * OpenCC HKVariants.txt and TWVariants.txt, Apache License 2.0;
   * readings of 640 characters from the book data of 粵音資料集叢 by 石見田
     (https://github.com/jyutnet/cantonese-books-data), published without a
@@ -46,3 +50,32 @@ The 'fancy' and 'discord' tone symbols (TONE_MARKS in
 src/xjyutping/__init__.py) come from Visual Jyutping
 (https://github.com/VincentTam/visual-jyutping), MIT License,
 Copyright (c) 2024 Vincent Tam.
+
+The word list of ToJyutping, which the data files adapt, is distributed
+under the following licence:
+
+    BSD 2-Clause License
+
+    Copyright (c) 2024 Cantonese Computational Linguistics Infrastructure Development Workgroup
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+    1. Redistributions of source code must retain the above copyright notice, this
+       list of conditions and the following disclaimer.
+
+    2. Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
+       and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

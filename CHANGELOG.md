@@ -27,6 +27,35 @@ every release we update all three and add an entry to Part I.
 There are no entries yet. Add them here under `### Added`, `### Changed`,
 `### Fixed` and so on.
 
+## [1.2.0] - 2026-09-29
+
+### Added
+
+- The data of xjyutping-tex 1.4.0, which learns from ToJyutping (version
+  3.2.0, by CanCLID, BSD-2-Clause). Where rime-cantonese gives a word several
+  readings, the package now takes the one that ToJyutping chooses, such as 公園
+  *gung1 jyun2*, 郵局 *jau4 guk2* and 請假 *ceng2 gaa3*, and 494 words of
+  ToJyutping that rime lacks are added.
+- `test_tojyutping_readings`, which checks 揾, 都會, 呢就, the new particle
+  defaults and the words that ToJyutping decides.
+- The README reports the accuracy measured against the Hong Kong Cantonese
+  Corpus (HKCanCor), and `LICENSE` reproduces the BSD notice of ToJyutping.
+
+### Changed
+
+- The particles 囖, 嚹, 㗎 and 嘞 now default to *lo1*, *laa3*, *gaa3* and
+  *laak3*.
+- `tests/parity_expected.txt` was regenerated from xjyutping-tex 1.4.0, with
+  two changed readings, 價錢 *cin4* and 便宜 *pin4 ji2*.
+
+### Fixed
+
+- 揾 now reads *wan2* (it is used for 搵), 都會 in 我哋都會去 reads *dou1 wui5*
+  while 大都會 keeps *wui6*, and 係呢 reads *hai6 ne1*.
+
+Overall, the share of the characters of HKCanCor that the package reads
+correctly rises from 92.1% to 94.1%.
+
 ## [1.1.0] - 2026-09-28
 
 ### Added
@@ -127,7 +156,7 @@ The table below lists where things are.
 | --- | --- |
 | `src/xjyutping/__init__.py` | The whole package: `Jyutping`, `Segment`, `TONE_MARKS`. |
 | `src/xjyutping/data/*.tsv` | Generated data (see below); never edit by hand. |
-| `tests/test_xjyutping.py` | pytest suite (39 tests). |
+| `tests/test_xjyutping.py` | pytest suite (40 tests). |
 | `tests/parity_corpus.txt`, `parity_expected.txt`, `parity.tex` | The parity test with the LaTeX package: the corpus, the frozen TeX debug log, and the document that regenerates the log. |
 | `pyproject.toml`, `MANIFEST.in` | Packaging (setuptools; the TSV files are package data; the sdist includes the parity files). |
 | `README.md`, `LICENSE`, `CHANGELOG.md` | Documentation, licences (code MIT, data CC BY-SA 4.0), this file. |
@@ -290,12 +319,30 @@ This version changed only the data and the documentation.
   PyPI API token, with the user name `__token__`. If in doubt, upload to
   TestPyPI first with `--repository testpypi`.
 
-## 4. Open issues
+## 4. Version 1.2.0
+
+This version changed the data, one test and the documentation, while the
+code did not change.
+
+- The build of xjyutping-tex 1.4.0 copied its data into this package.
+  Specifically, ToJyutping chooses between the readings that rime gives a
+  word (463 words) and adds 494 words, four particles have new defaults, and
+  揾, 都會 and 係呢 are fixed. The LaTeX package's changelog, Part II,
+  Section 9, describes how these choices were made and tested.
+- The parity file was regenerated with both TeX engines, which agree.
+- `test_tojyutping_readings` was added, so the suite now has 40 tests, and
+  the 24 README examples still run unchanged.
+- Measured against the 161 045 characters of HKCanCor, this package now reads
+  94.08% of the characters correctly, against 92.09% for 1.1.0 and 92.78%
+  for ToJyutping 3.2.0. The package gives the same readings as the LaTeX
+  package, so the measurement applies to both.
+
+## 5. Open issues
 
 - Readings that need more context than a word list gives, such as
   為 wai4/wai6, 同行, 種花, 長得 and 重未, stay wrong until a user sets them.
   They are listed in the LaTeX package's changelog, Part II, Section 4,
-  item 14, which is still open after its 1.2.0 (Section 7.7).
+  item 14, which is still open after its 1.4.0 (Sections 7.7 and 9.7).
 - The licence of the book characters is still an open question, since the
   640 characters from 粵音資料集叢 come from data published without a
   licence statement (see `LICENSE` and the LaTeX package's changelog,

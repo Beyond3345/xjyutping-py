@@ -120,6 +120,21 @@ def test_added_vocabulary(jyutping):
     assert jyutping.annotate('鿃') == [('鿃', 'sim2')]
 
 
+def test_tojyutping_readings(jyutping):
+    # 1.2.0: ToJyutping picks between the readings rime gives a word
+    assert jyutping.get_jyutping('公園價錢', ' ') == 'gung1 jyun2 gaa3 cin4'
+    assert jyutping.get_jyutping('澳門郵局', ' ') == 'ou3 mun2 jau4 guk2'
+    # the modal 會 after 都, while 'metropolis' keeps wui6
+    assert jyutping.get_jyutping('我哋都會去', ' ') == 'ngo5 dei6 dou1 wui5 heoi3'
+    assert jyutping.get_jyutping('國際大都會', ' ') == 'gwok3 zai3 daai6 dou1 wui6'
+    # 揾 is 搵, 呢 before 就 is the particle, and the particle defaults
+    assert jyutping.get_jyutping('去揾佢', ' ') == 'heoi3 wan2 keoi5'
+    assert jyutping.get_jyutping('佢呢就走', ' ') == 'keoi5 ne1 zau6 zau2'
+    assert jyutping.get_jyutping('但係呢', ' ') == 'daan6 hai6 ne1'
+    assert jyutping.get_jyutping('好正囖', ' ') == 'hou2 zeng3 lo1'
+    assert jyutping.get_jyutping('係㗎得嘞', ' ') == 'hai6 gaa3 dak1 laak3'
+
+
 def test_variants(jyutping):
     assert jyutping.get_jyutping('因為') == jyutping.get_jyutping('因爲') == 'jan1-wai6'
     assert jyutping.get_jyutping('裡面') == jyutping.get_jyutping('裏面') == 'leoi5-min6'

@@ -461,7 +461,7 @@
 㗋	hau4		0
 㗌	zat1		0
 㗍	zaai1		0
-㗎	ga3	gaa3 gaa2	1
+㗎	gaa3	gaa2 ga3	1
 㗏	waai1	wai1	1
 㗐	haap3		0
 㗑	baai3		0
@@ -8647,7 +8647,7 @@
 嘛	maa3	maa5	1
 嘜	mak1		0
 嘝	huk6		0
-嘞	la3	laak3 lak3	1
+嘞	laak3	la3 lak3	1
 嘟	dyut1	dou1	0
 嘠	gaa4	gaat3	1
 嘡	tong1		0
@@ -8802,7 +8802,7 @@
 嚶	jing1		0
 嚷	joeng6	joeng5	0
 嚸	dim2		0
-嚹	la4	laa3 laa4	1
+嚹	laa3	laa4 la4	1
 嚺	daap6		0
 嚻	hiu1		0
 嚼	zoek3	ziu6 ziu3 zoek6	0
@@ -8831,7 +8831,7 @@
 囓	jit6	ngit6 ngaat6 nip6	1
 囔	nong4		0
 囕	hei3		0
-囖	lo4		0
+囖	lo1	lo4	1
 囗	gwok3	wai4	1
 囘	wui4		0
 囙	jan1		0
@@ -12199,7 +12199,7 @@
 揻	wai1		0
 揼	dam1	dam3 dam2 dap6	1
 揽	laam5	laam2	1
-揾	wan3		0
+揾	wan2	wan3	1
 揿	gam6		0
 搀	caam1		0
 搁	gok3		0
