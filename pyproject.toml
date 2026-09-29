@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "xjyutping"
 version = "1.1.0"
-description = "Cantonese Jyutping (粵拼) for traditional Chinese text, with readings chosen from word context"
+description = "Convert Traditional Chinese text to Cantonese Jyutping (粵拼), with pronunciation chosen from context"
 readme = "README.md"
 requires-python = ">=3.8"
 # the code is MIT; the data files in src/xjyutping/data are CC BY-SA 4.0

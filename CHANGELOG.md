@@ -64,8 +64,9 @@ and so on.
 - `tests/parity.tex` compiles with XeLaTeX or LuaLaTeX.
 - `tests/parity_expected.txt` was regenerated from xjyutping-tex 1.2.0 and
   changed in one line: 隨着 is now one word, with the same readings.
-- README: installing from GitHub or from a checkout, and links to the LaTeX
-  package's repository.
+- README: shorter, with installing from PyPI or GitHub, and links to the LaTeX
+  package's repository. The PyPI summary is now "Convert Traditional Chinese
+  text to Cantonese Jyutping (粵拼), with pronunciation chosen from context".
 - **Packaging for PyPI:** `pyproject.toml` declares the licence as the SPDX
   expression `MIT AND CC-BY-SA-4.0` with `license-files` (PEP 639, hence
   setuptools 77 or later to build), and has keywords, classifiers and the
