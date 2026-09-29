@@ -108,6 +108,18 @@ def test_run_final_reading(jyutping):
     assert jyutping.annotate('呢')[0] == ('呢', 'ne1')
 
 
+def test_added_vocabulary(jyutping):
+    # words from CC-Canto and the CC-CEDICT Cantonese readings (1.1.0)
+    assert jyutping.get_jyutping('機長廣播', ' ') == 'gei1 zoeng2 gwong2 bo3'
+    assert jyutping.get_jyutping('營業額', ' ') == 'jing4 jip6 ngaak2'
+    assert jyutping.get_jyutping('自由行旅客', ' ') == 'zi6 jau4 hang4 leoi5 haak3'
+    # ... but not where they would take a character from its neighbour
+    assert jyutping.get_jyutping('這個方法會否', ' ').endswith('faat3 wui5 fau2')
+    assert jyutping.get_jyutping('碳水化合物', ' ') == 'taan3 seoi2 faa3 hap6 mat6'
+    # characters that only the books of cantonese-books-data have
+    assert jyutping.annotate('鿃') == [('鿃', 'sim2')]
+
+
 def test_variants(jyutping):
     assert jyutping.get_jyutping('因為') == jyutping.get_jyutping('因爲') == 'jan1-wai6'
     assert jyutping.get_jyutping('裡面') == jyutping.get_jyutping('裏面') == 'leoi5-min6'
@@ -272,7 +284,7 @@ def test_parity_with_tex_package():
     parity_corpus.txt is plain text with \\setjyutping lines; it starts with
     the text of xjyutping-tex/tests/regression.tex, its commands resolved into
     the runs TeX makes of them.  parity_expected.txt is the debug log of
-    parity.tex (see there), frozen from xjyutping-tex 1.1.0.
+    parity.tex (see there), frozen from xjyutping-tex 1.2.0.
     """
     j = Jyutping()
     corpus = (HERE / 'parity_corpus.txt').read_text(encoding='utf8')
