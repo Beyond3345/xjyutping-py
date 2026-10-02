@@ -27,6 +27,23 @@ every release we update all three and add an entry to Part I.
 There are no entries yet. Add them here under `### Added`, `### Changed`,
 `### Fixed` and so on.
 
+## [1.3.1] - 2026-10-02
+
+### Fixed
+
+- The data of xjyutping-tex 1.5.1, which corrects the readings found wrong
+  in the last judged round of 1.5.0, such as 難為 *naan4 wai4*, 掌櫃 *gwai6*,
+  喺呢個情況下 *haa6*, 當佢係 *dong3* "treat as" and 平 *peng4* "cheap" after
+  a degree word or before a particle (好平, 平啦), while names that end in 平
+  (蔣平) keep *ping4*.
+- The README's example of a guessed reading is now 佢當我細路, since 佢當我係朋友
+  is read right without help.
+- `test_corpus_tuned_readings` checks the new readings.
+- The parity test builds the brackets of a guessed reading from the readings
+  other than the one chosen, as the corrected `debug` log of xjyutping-tex
+  1.5.1 does, and `tests/parity_expected.txt` was regenerated with both
+  engines.
+
 ## [1.3.0] - 2026-10-02
 
 ### Added
@@ -393,12 +410,22 @@ both the data and the code changed.
   against this package on 405 561 segments (704 484 characters) of all the
   corpora.
 
-## 6. Open issues
+## 6. Version 1.3.1
+
+This version only changes the data, which comes from xjyutping-tex 1.5.1,
+and the parity test; the code of the package is that of 1.3.0. The LaTeX package's changelog, Part II, Section
+11, describes how the errors of the last judged round were examined, which
+changes were kept and which were reverted because they lost on another
+corpus. On a fifth round of new sentences, kept out of all tuning, the
+reading of xjyutping was judged right in 95.3% of the characters on which
+the systems disagree, against 94.9% for 1.3.0 and 60.7% for ToJyutping.
+
+## 7. Open issues
 
 - Readings that need more context than a word list gives, such as
   為 wai4/wai6, 當 dong1/dong3 and the tone of a particle in a question,
   stay wrong until a user sets them. The LaTeX package's changelog, Part II,
-  Section 10.8, lists what remains after its 1.5.0.
+  Sections 10.8 and 11.5, lists what remains after its 1.5.0 and 1.5.1.
 - The licence of the book characters is still an open question, since the
   640 characters from 粵音資料集叢 come from data published without a
   licence statement (see `LICENSE` and the LaTeX package's changelog,

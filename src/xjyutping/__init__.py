@@ -14,7 +14,7 @@ from itertools import groupby, islice, product
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Set, Tuple
 
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 __all__ = ['Jyutping', 'Segment', 'TONE_MARKS']
 
 DATA_DIR = Path(__file__).resolve().with_name('data')

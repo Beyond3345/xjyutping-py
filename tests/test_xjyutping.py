@@ -153,6 +153,16 @@ def test_corpus_tuned_readings(jyutping):
     assert jyutping.get_jyutping('嗯') == 'm6'
     assert not [w for w, r in jyutping._words.items()
                 if re.search(r'\b(la[134]|a[13]|ga[34]|ma3|za3)\b', r)]
+    # 1.3.1: 平 'cheap' after a degree word, while names ending in 平 and
+    # 平靜 keep ping4; 當 'treat as' before X係, 'when' otherwise
+    assert jyutping.get_jyutping('超平。', ' ') == 'ciu1 peng4 。'
+    assert jyutping.get_jyutping('蔣平。', ' ') == 'zoeng2 ping4 。'
+    assert jyutping.get_jyutping('好平靜', ' ') == 'hou2 ping4 zing6'
+    assert jyutping.get_jyutping('佢哋打平', ' ').split()[-1] == 'ping4'
+    assert jyutping.get_jyutping('我當佢係朋友', ' ').split()[1] == 'dong3'
+    assert jyutping.get_jyutping('當佢哋到咗', ' ').split()[0] == 'dong1'
+    assert jyutping.get_jyutping('當日', ' ') == 'dong1 jat6'
+    assert jyutping.get_jyutping('喺呢個情況下', ' ').split()[-1] == 'haa6'
 
 
 def test_frequency_tie_break(jyutping):
@@ -342,7 +352,8 @@ def test_parity_with_tex_package():
         for s in j.segment(parts[k]):
             log = ''.join('%s%s:%s' % (c, r, s.type) for c, r in zip(s.text, s.readings))
             if s.type == 'm':
-                log += '(%s)' % ' '.join(j._chars[s.text][1])
+                default, others, _ = j._chars[s.text]
+                log += '(%s)' % ' '.join(r for r in [default] + others if r != s.readings[0])
             got.append(log)
         if k + 2 < len(parts):
             j.set_jyutping(parts[k + 1], parts[k + 2])

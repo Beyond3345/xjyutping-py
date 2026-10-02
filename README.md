@@ -1,6 +1,6 @@
 # xjyutping (Python)
 
-Version 1.3.0 (2026-10-02). Versions follow
+Version 1.3.1 (2026-10-02). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in
 [`CHANGELOG.md`](https://github.com/Beyond3345/xjyutping-py/blob/main/CHANGELOG.md).
@@ -103,8 +103,8 @@ classifier but the particle *ne1* elsewhere, while variant shapes such as
 'ni1 zoeng1 cong4 hou2 peng4 ， hou2 maa4 faan4 ne1 ？'
 >>> j.get_jyutping('北京路步行街', ' ')
 'bak1 ging1 lou6 bou6 hang4 gaai1'
->>> j.segment('佢當我係朋友')
-[Segment(text='佢', readings=['keoi5'], type='s'), Segment(text='當', readings=['dong1'], type='m'), Segment(text='我', readings=['ngo5'], type='s'), Segment(text='係', readings=['hai6'], type='s'), Segment(text='朋友', readings=['pang4', 'jau5'], type='w')]
+>>> j.segment('佢當我細路')
+[Segment(text='佢', readings=['keoi5'], type='s'), Segment(text='當', readings=['dong1'], type='m'), Segment(text='我', readings=['ngo5'], type='s'), Segment(text='細路', readings=['sai3', 'lou6'], type='w')]
 ```
 
 The `segment` method shows how a text was read, in the same way as the
@@ -112,7 +112,7 @@ The `segment` method shows how a text was read, in the same way as the
 list, `u` for a reading you set, `m` for a guessed reading of a character
 with several readings and `s` for a character with only one reading. Here 當
 is guessed as *dong1* ("when"), while the sentence means "he treats me as a
-friend" (*dong3*).
+child" (*dong3*).
 
 The `set_jyutping` method works like `\setjyutping` in LaTeX. A single
 character gets a new default reading, while several characters, with one
@@ -122,11 +122,11 @@ and the settings belong to the `Jyutping` instance.
 
 ```pycon
 >>> j.set_jyutping('當我', 'dong3 ngo5')
->>> j.get_jyutping('佢當我係朋友')
-'keoi5-dong3-ngo5-hai6-pang4-jau5'
+>>> j.get_jyutping('佢當我細路')
+'keoi5-dong3-ngo5-sai3-lou6'
 >>> j.set_jyutping('當', 'dong3')
->>> j.get_jyutping('佢當佢係朋友')
-'keoi5-dong3-keoi5-hai6-pang4-jau5'
+>>> j.get_jyutping('佢當佢細路')
+'keoi5-dong3-keoi5-sai3-lou6'
 ```
 
 ### Combinations
@@ -196,10 +196,10 @@ sentence-final particles and interjections, while ToJyutping 3.2.0 reads
 92.6% and 96.1%. On the particles of CantoMap, which were transcribed by ear,
 it reads 97.5% (79.0% in 1.2.0, 83.0% for ToJyutping). On fresh sentences of
 SpiCE, MagicHub and WenetSpeech-Yue, where the systems disagree, the reading
-of xjyutping was judged right in 91.7% of the cases, against 62.4%
-for ToJyutping. Part II, Section 10 of the LaTeX package's
+of xjyutping was judged right in 95.3% of the cases (94.9% in 1.3.0), against
+60.7% for ToJyutping. Part II, Sections 10 and 11 of the LaTeX package's
 [`CHANGELOG.md`](https://github.com/Beyond3345/xjyutping-tex/blob/main/CHANGELOG.md)
-describes the tests.
+describe the tests.
 
 ## Testing
 
