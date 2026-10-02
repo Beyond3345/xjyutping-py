@@ -27,6 +27,35 @@ every release we update all three and add an entry to Part I.
 There are no entries yet. Add them here under `### Added`, `### Changed`,
 `### Fixed` and so on.
 
+## [1.3.0] - 2026-10-02
+
+### Added
+
+- Word frequencies. `words.tsv` and `chars.tsv` carry a cost, and where two
+  ways of splitting a run have as many words and single characters, the one
+  of least total cost (the more common words) wins, rather than the one with
+  the longer final word (步行|街, not 步|行街). A word set with `set_jyutping`
+  has cost 0, so it wins such a tie.
+- `next.tsv`, the reading of a character standing alone before the one or
+  two characters given, which `segment` checks before the run-final reading
+  and the default. It holds the demonstrative 呢 and 哩 before a classifier
+  (呢間 *ni1*) and 咁 *gam2* before a particle or a pronoun.
+- `test_corpus_tuned_readings` and `test_frequency_tie_break`.
+
+### Changed
+
+- The data of xjyutping-tex 1.5.0, tuned on HKCanCor, CantoMap, SpiCE,
+  WenetSpeech-Yue, MagicHub and the Cantonese Wikipedia. The particles follow
+  present-day Hong Kong usage (呢 alone *ne1*, 咯 *lo3*, 哦 *o6*, 你做乜啊
+  *aa3*), characters that are mostly read otherwise alone have new defaults
+  (重 *zung6*, 下 *haa5*, 名 *meng2*), and about 200 words were corrected or
+  added.
+- `tests/parity_expected.txt` was regenerated from xjyutping-tex 1.5.0.
+
+Overall, the share of the characters of the held-out half of HKCanCor that
+the package reads correctly rises from 94.0% to 95.6%, and the share of the
+particles of CantoMap from 79.0% to 97.5%.
+
 ## [1.2.0] - 2026-09-29
 
 ### Added
@@ -168,10 +197,13 @@ repository sits next to xjyutping-tex, or when it is run with
 `--py-data DIR`. The files are,
 
 - `chars.tsv`, which gives each character with its default reading, its
-  other readings and a polyphone flag,
+  other readings, a polyphone flag and (since 1.3.0) its cost,
 - `finals.tsv`, which gives the reading at the end of a run,
-- `variants.tsv`, which maps each variant to its canonical character, and
-- `words.tsv`, which gives each word with its readings.
+- `next.tsv` (since 1.3.0), which gives the reading of a character standing
+  alone before the one or two characters that follow it in the pattern,
+- `variants.tsv`, which maps each variant to its canonical character and
+- `words.tsv`, which gives each word with its readings and (since 1.3.0) its
+  cost.
 
 That repository's README and changelog describe the sources and every rule
 for choosing readings.
@@ -267,9 +299,9 @@ On the development Mac (Python 3.9), `Jyutping()` takes about 0.08 s and
 | --- | --- |
 | a character is Chinese iff `\xjp@c@<char>` exists | `c in self._chars` |
 | runs: spaces and single line breaks between characters continue a run; `\par`/blank line ends it | `_runs` (ASCII space, tab, CR, LF; two line ends end the run; U+3000 ends it) |
-| `\__xjyutping_flush:` (DP, 100000 per segment + 1 per single, `<=` so longer final word wins; bound `\xjp@e@` raw or canonical) | `_segment_run` (same costs and comparison; bound `_longest`, computed from `words.tsv` at load) |
+| `\__xjyutping_flush:` (DP, 100000 per segment + 1 per single in `\xjp@cost@`, then the sum of `\xjp@k@` costs in `\xjp@lm@` since 1.5.0, `<=` so a full tie goes to the longer final word; bound `\xjp@e@` raw or canonical) | `_segment_run` (the same two values as a tuple; costs from `words.tsv` and `chars.tsv`; bound `_longest`, computed from `words.tsv` at load) |
 | `\__xjyutping_emit:nn` word: raw key, else canonical; type `u` if `\xjp@uw@` | same, `self._user_words` |
-| `\__xjyutping_lookup:nn` single: user, then `\xjp@f@` at run end, then default; type m/s from `\xjp@m@` | same (`_user_chars`, `_finals`, polyphone flag in `chars.tsv`) |
+| `\__xjyutping_lookup:nn` single: user, then `\xjp@f@` at run end, then default; type m/s from `\xjp@m@`; then `\__xjyutping_next:n` overrides a non-user reading from `\xjp@x@` (since 1.5.0) | same (`_user_chars`, `_next`, `_finals`, polyphone flag in `chars.tsv`) |
 | `\__xjyutping_set:nnn` / `\__xjyutping_set_word:nn` | `set_jyutping` (raw and canonical keys, longest bound) |
 | `debug` log `銀ngan4:w…` | `segment()` |
 
@@ -337,12 +369,36 @@ code did not change.
   for ToJyutping 3.2.0. The package gives the same readings as the LaTeX
   package, so the measurement applies to both.
 
-## 5. Open issues
+## 5. Version 1.3.0
+
+This version changed the segmentation for the first time since 1.0.0, so
+both the data and the code changed.
+
+- `_segment_run` keeps two values per position, the count of 100 000 per
+  segment plus 1 per single character as before, and the sum of the costs
+  of its words and single characters, and compares the two in order (`<=`
+  on tuples, so that a full tie still goes to the longer final word). This
+  matches `\xjp@cost@<i>` and `\xjp@lm@<i>` in `xjyutping.sty`. The cost of
+  a word comes from the third column of `words.tsv`, that of a character from
+  the fifth column of `chars.tsv`, and data without these columns gives cost
+  0, which reproduces the old behaviour.
+- A single character then looks up `next.tsv` with the three and then the two
+  characters starting at it, by spelling and then by canonical spelling,
+  before `finals.tsv` and its default. A character set with `set_jyutping`
+  skips this, as in the LaTeX package.
+- `set_jyutping` gives a word cost 0.
+- The LaTeX package's changelog, Part II, Section 10, describes how the data
+  was tuned and measured, and `jyutData/eval` of the workspace holds the
+  scripts. The parity test was regenerated and the LaTeX package was checked
+  against this package on 405 561 segments (704 484 characters) of all the
+  corpora.
+
+## 6. Open issues
 
 - Readings that need more context than a word list gives, such as
-  為 wai4/wai6, 同行, 種花, 長得 and 重未, stay wrong until a user sets them.
-  They are listed in the LaTeX package's changelog, Part II, Section 4,
-  item 14, which is still open after its 1.4.0 (Sections 7.7 and 9.7).
+  為 wai4/wai6, 當 dong1/dong3 and the tone of a particle in a question,
+  stay wrong until a user sets them. The LaTeX package's changelog, Part II,
+  Section 10.8, lists what remains after its 1.5.0.
 - The licence of the book characters is still an open question, since the
   640 characters from 粵音資料集叢 come from data published without a
   licence statement (see `LICENSE` and the LaTeX package's changelog,

@@ -98,7 +98,7 @@ def test_segmentation(jyutping):
     assert jyutping.segment('我哋去銀行，佢重未嚟') == [
         Segment('我哋', ['ngo5', 'dei6'], 'w'), Segment('去', ['heoi3'], 's'),
         Segment('銀行', ['ngan4', 'hong4'], 'w'), Segment('佢', ['keoi5'], 's'),
-        Segment('重', ['cung5'], 'm'), Segment('未', ['mei6'], 's'),
+        Segment('重', ['zung6'], 'm'), Segment('未', ['mei6'], 's'),
         Segment('嚟', ['lai4'], 'm')]
 
 
@@ -133,6 +133,39 @@ def test_tojyutping_readings(jyutping):
     assert jyutping.get_jyutping('但係呢', ' ') == 'daan6 hai6 ne1'
     assert jyutping.get_jyutping('好正囖', ' ') == 'hou2 zeng3 lo1'
     assert jyutping.get_jyutping('係㗎得嘞', ' ') == 'hai6 gaa3 dak1 laak3'
+
+
+def test_corpus_tuned_readings(jyutping):
+    # 1.3.0: 呢 alone is the particle, and the demonstrative before a
+    # classifier or a number, unless a word such as 一定 follows
+    assert jyutping.get_jyutping('呢間酒店', ' ') == 'ni1 gaan1 zau2 dim3'
+    assert jyutping.get_jyutping('佢呢一定唔肯', ' ') == 'keoi5 ne1 jat1 ding6 m4 hang2'
+    assert jyutping.get_jyutping('啲錢呢邊個畀你', ' ').split()[2] == 'ne1'
+    # 重 alone is 'still', 'heavy' comes from words; 咁 'like this' is gam2
+    assert jyutping.get_jyutping('佢重有一個', ' ').split()[1] == 'zung6'
+    assert jyutping.get_jyutping('好重', ' ') == 'hou2 cung5'
+    assert jyutping.get_jyutping('就係咁', ' ') == 'zau6 hai6 gam2'
+    assert jyutping.get_jyutping('咁樣做', ' ') == 'gam2 joeng2 zou6'
+    assert jyutping.get_jyutping('咁大', ' ') == 'gam3 daai6'
+    # particles: the usual tone at the end of a word, standard spellings
+    assert jyutping.get_jyutping('你做乜啊', ' ') == 'nei5 zou6 mat1 aa3'
+    assert jyutping.get_jyutping('下星期啦', ' ') == 'haa6 sing1 kei4 laa1'
+    assert jyutping.get_jyutping('嗯') == 'm6'
+    assert not [w for w, r in jyutping._words.items()
+                if re.search(r'\b(la[134]|a[13]|ga[34]|ma3|za3)\b', r)]
+
+
+def test_frequency_tie_break(jyutping):
+    # among splits with as many words and single characters, the most usual
+    # words win, not the longer final word
+    assert [s.text for s in jyutping.segment('步行街')] == ['步行', '街']
+    assert jyutping.get_jyutping('之後改名叫北京', ' ') == 'zi1 hau6 goi2 meng2 giu3 bak1 ging1'
+    assert jyutping.get_jyutping('影相等活動', ' ') == 'jing2 soeng2 dang2 wut6 dung6'
+    assert jyutping.get_jyutping('有人為咗照顧佢', ' ').split()[2] == 'wai6'
+    # a word set by the user wins such a tie
+    j = Jyutping()
+    j.set_jyutping('行街', 'haang4 gaai1')
+    assert [s.text for s in j.segment('步行街')] == ['步', '行街']
 
 
 def test_variants(jyutping):

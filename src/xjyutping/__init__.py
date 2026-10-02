@@ -14,7 +14,7 @@ from itertools import groupby, islice, product
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Set, Tuple
 
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 __all__ = ['Jyutping', 'Segment', 'TONE_MARKS']
 
 DATA_DIR = Path(__file__).resolve().with_name('data')
@@ -56,12 +56,25 @@ class Jyutping:
 
     def __init__(self, data_dir: Optional[str] = None) -> None:
         d = Path(data_dir) if data_dir else DATA_DIR
-        # char -> (default reading, other readings, polyphone?)
-        self._chars = {c: (default, others.split(), flag == '1')
-                       for c, default, others, flag in _table(d / 'chars.tsv')}
+        # char -> (default reading, other readings, polyphone?); a fifth
+        # column, if any, is the cost of the character standing alone
+        self._chars: Dict[str, Tuple[str, List[str], bool]] = {}
+        self._cost: Dict[str, int] = {}                    # char or word -> cost
+        for row in _table(d / 'chars.tsv'):
+            self._chars[row[0]] = (row[1], row[2].split(), row[3] == '1')
+            if len(row) > 4:
+                self._cost[row[0]] = int(row[4])
         self._finals = dict(_table(d / 'finals.tsv'))      # reading at run end
         self._variants = dict(_table(d / 'variants.tsv'))  # variant -> canonical
-        self._words = dict(_table(d / 'words.tsv'))        # word -> 'r1 r2 ...'
+        self._words: Dict[str, str] = {}                   # word -> 'r1 r2 ...'
+        for row in _table(d / 'words.tsv'):
+            self._words[row[0]] = row[1]
+            if len(row) > 2:
+                self._cost[row[0]] = int(row[2])
+        # a character and the one or two after it -> the character's reading
+        # when it stands alone before them (呢 before a classifier: ni1)
+        nxt = d / 'next.tsv'
+        self._next = dict(_table(nxt)) if nxt.exists() else {}
         self._longest: Dict[str, int] = {}                 # final char -> length
         for w in self._words:
             if len(w) > self._longest.get(w[-1], 0):
@@ -108,6 +121,7 @@ class Jyutping:
             return
         for w in (text, self._canon(text)):
             self._words[w] = ' '.join(syllables)
+            self._cost[w] = 0            # a user's word wins ties
             self._user_words.add(w)
             self._longest[w[-1]] = max(self._longest.get(w[-1], 0), len(w))
 
@@ -206,20 +220,33 @@ class Jyutping:
             runs.append(run)
         return runs
 
+    def _key(self, run: str, canon: str, i: int, j: int) -> Optional[str]:
+        """How the word run[i:j] is listed (as spelt, or with canonical
+        characters), or None."""
+        if run[i:j] in self._words:
+            return run[i:j]
+        return canon[i:j] if canon[i:j] in self._words else None
+
     def _segment_run(self, run: str) -> List[Segment]:
         """Split a run into the fewest words, then the fewest single
-        characters; on a tie the longer final word wins (the cost is 100000
-        per segment plus 1 per single character)."""
+        characters, then the most usual words (the least total cost, from
+        word frequencies); on a full tie the longer final word wins.  The
+        count is 100000 per segment plus 1 per single character."""
         n, canon, words = len(run), self._canon(run), self._words
-        cost, back = [0] * (n + 1), [1] * (n + 1)
+        cost, back = [(0, 0)] * (n + 1), [1] * (n + 1)
         for i in range(1, n + 1):
-            best = cost[i - 1] + 100001
+            c = run[i - 1]
+            best = (cost[i - 1][0] + 100001,
+                    cost[i - 1][1] + self._cost.get(c, self._cost.get(canon[i - 1], 0)))
             top = min(i, max(self._longest.get(run[i - 1], 0),
                              self._longest.get(canon[i - 1], 0)))
             for size in range(2, top + 1):
-                if cost[i - size] + 100000 <= best and (
-                        run[i - size:i] in words or canon[i - size:i] in words):
-                    best, back[i] = cost[i - size] + 100000, size
+                key = self._key(run, canon, i - size, i)
+                if key is None:
+                    continue
+                here = (cost[i - size][0] + 100000, cost[i - size][1] + self._cost.get(key, 0))
+                if here <= best:
+                    best, back[i] = here, size
             cost[i] = best
         bounds, j = [], n
         while j:
@@ -236,7 +263,10 @@ class Jyutping:
                 segments.append(Segment(text, [self._user_chars[text]], 'u'))
             else:
                 default, _, polyphone = self._chars[text]
-                reading = self._finals.get(text, default) if j == n else default
+                reading = (self._next.get(run[i:i + 3]) or self._next.get(canon[i:i + 3])
+                           or self._next.get(run[i:i + 2]) or self._next.get(canon[i:i + 2]))
+                if reading is None:
+                    reading = self._finals.get(text, default) if j == n else default
                 segments.append(Segment(text, [reading], 'm' if polyphone else 's'))
         return segments
 

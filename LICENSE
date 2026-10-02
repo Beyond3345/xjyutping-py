@@ -44,7 +44,12 @@ they adapt share-alike material. They are built from:
   * OpenCC HKVariants.txt and TWVariants.txt, Apache License 2.0;
   * readings of 640 characters from the book data of 粵音資料集叢 by 石見田
     (https://github.com/jyutnet/cantonese-books-data), published without a
-    licence statement and used with attribution.
+    licence statement and used with attribution;
+  * word frequencies: essay-cantonese.txt of rime-cantonese (CC BY 4.0) and
+    the number of times each word is used in the transcripts of
+    WenetSpeech-Yue by the ASLP-lab (https://github.com/ASLP-lab/WenetSpeech-Yue,
+    CC BY-NC 4.0). The counts are statistics of the corpus; no text of it is
+    included.
 
 The 'fancy' and 'discord' tone symbols (TONE_MARKS in
 src/xjyutping/__init__.py) come from Visual Jyutping
