@@ -16,7 +16,10 @@ notes for the Python side.
 The version number is written in three places, which are `version` in
 `pyproject.toml`, `__version__` in `src/xjyutping/__init__.py` and
 `README.md`. The test `test_version` checks that the first two agree. For
-every release we update all three and add an entry to Part I.
+every release we update all three and add an entry to Part I. Once the
+release reaches `main`, the workflow `.github/workflows/workflow.yml` runs the
+tests and, since PyPI does not have that version yet, builds the package and
+publishes it to PyPI through trusted publishing.
 
 ---
 

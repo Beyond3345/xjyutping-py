@@ -1,0 +1,57 @@
+# Publishes xjyutping to PyPI when main has a version that PyPI does not have
+# yet: the tests run, the package is built, and the publish job uploads it.
+# The upload uses PyPI's trusted publishing (OpenID Connect), so no token is
+# stored in the repository. The trusted publisher on pypi.org names the owner
+# Beyond3345, the repository xjyutping-py, the workflow workflow.yml and the
+# environment pypi.
+name: publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      new: ${{ steps.version.outputs.new }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
+      - run: pip install -e '.[test]' build
+      - run: pytest tests
+      # the version in pyproject.toml, and whether PyPI already has it
+      - id: version
+        run: |
+          version=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          status=$(curl -s -o /dev/null -w '%{http_code}' "https://pypi.org/pypi/xjyutping/$version/json")
+          case $status in
+            200) echo "xjyutping $version is already on PyPI"; echo "new=false" >> "$GITHUB_OUTPUT" ;;
+            404) echo "xjyutping $version is new"; echo "new=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "PyPI answered $status for xjyutping $version"; exit 1 ;;
+          esac
+      - run: python -m build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    if: needs.build.outputs.new == 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # the OpenID Connect token that PyPI exchanges for an upload token
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
