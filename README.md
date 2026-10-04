@@ -1,5 +1,7 @@
 # xjyutping (Python)
 
+[![PyPI](https://img.shields.io/pypi/v/xjyutping)](https://pypi.org/project/xjyutping/)
+
 Version 1.3.1 (2026-10-02). Versions follow
 [Semantic Versioning](https://semver.org), and the history of the project is
 kept in
