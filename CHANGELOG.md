@@ -30,6 +30,20 @@ publishes it to PyPI through trusted publishing.
 There are no entries yet. Add them here under `### Added`, `### Changed`,
 `### Fixed` and so on.
 
+## [1.3.2] - 2026-11-03
+
+### Fixed
+
+- The data of xjyutping-tex 1.5.3, with the readings that a teacher corrected
+  in xjyutping-Tool (see Section 12 of that package's changelog):
+  - 袋 standing alone is *doi2* "bag" (冇帶袋), while the verb (袋住, 袋錢) and
+    the measure word (一袋米) keep *doi6*.
+  - 女 standing alone is *neoi2* "daughter" at the end of a run and before a
+    particle, a verb, a pronoun or a number (我個女三歲, 我有一個三歲嘅女), while
+    before a noun it stays *neoi5* "female" (女同事).
+  - 購物袋 *doi2*, 越南河 *ho2* and 涼茶舖 *pou2* are words.
+- `test_corpus_tuned_readings` checks the new readings.
+
 ## [1.3.1] - 2026-10-02
 
 ### Fixed

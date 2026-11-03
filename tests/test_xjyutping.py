@@ -163,6 +163,19 @@ def test_corpus_tuned_readings(jyutping):
     assert jyutping.get_jyutping('當佢哋到咗', ' ').split()[0] == 'dong1'
     assert jyutping.get_jyutping('當日', ' ') == 'dong1 jat6'
     assert jyutping.get_jyutping('喺呢個情況下', ' ').split()[-1] == 'haa6'
+    # 1.3.2, after corrections sent from xjyutping-Tool: 袋 alone is the noun
+    # doi2, the verb and the measure word doi6; 女 'daughter' is neoi2 at the
+    # end of a run and before a particle, a verb or a number, 'female' neoi5
+    # before a noun
+    assert jyutping.get_jyutping('有冇自備購物袋?', ' ').split()[-2] == 'doi2'
+    assert jyutping.get_jyutping('我今日冇帶袋，你幫我袋住先', ' ').split()[5::5] == ['doi2', 'doi6']
+    assert jyutping.get_jyutping('買一袋米', ' ') == 'maai5 jat1 doi6 mai5'
+    assert jyutping.get_jyutping('我個女三歲', ' ').split()[2] == 'neoi2'
+    assert jyutping.get_jyutping('我有一個三歲嘅女', ' ').split()[-1] == 'neoi2'
+    assert jyutping.get_jyutping('佢個女朋友係女同事', ' ').split()[2::4] == ['neoi5', 'neoi5']
+    assert jyutping.get_jyutping('一男一女', ' ') == 'jat1 naam4 jat1 neoi5'
+    assert jyutping.get_jyutping('涼茶舖', ' ') == 'loeng4 caa4 pou2'
+    assert jyutping.get_jyutping('越南河', ' ') == 'jyut6 naam4 ho2'
 
 
 def test_frequency_tie_break(jyutping):
